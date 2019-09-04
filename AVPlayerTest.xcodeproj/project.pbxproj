@@ -12,6 +12,8 @@
 		3B2C1CDA232018A100CD7EB7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B2C1CD8232018A100CD7EB7 /* Main.storyboard */; };
 		3B2C1CDC232018A400CD7EB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B2C1CDB232018A400CD7EB7 /* Assets.xcassets */; };
 		3B2C1CDF232018A400CD7EB7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B2C1CDD232018A400CD7EB7 /* LaunchScreen.storyboard */; };
+		3B2C1CE723204C2300CD7EB7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B2C1CE623204C2300CD7EB7 /* opencv2.framework */; };
+		3B2C1CEB23204C5300CD7EB7 /* CVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C1CEA23204C5300CD7EB7 /* CVWrapper.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,10 @@
 		3B2C1CDB232018A400CD7EB7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B2C1CDE232018A400CD7EB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B2C1CE0232018A400CD7EB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B2C1CE623204C2300CD7EB7 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		3B2C1CE823204C5300CD7EB7 /* AVPlayerTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerTest-Bridging-Header.h"; sourceTree = "<group>"; };
+		3B2C1CE923204C5300CD7EB7 /* CVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVWrapper.h; sourceTree = "<group>"; };
+		3B2C1CEA23204C5300CD7EB7 /* CVWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CVWrapper.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B2C1CE723204C2300CD7EB7 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,10 +63,14 @@
 			children = (
 				3B2C1CD4232018A100CD7EB7 /* AppDelegate.swift */,
 				3B2C1CD6232018A100CD7EB7 /* ViewController.swift */,
+				3B2C1CE923204C5300CD7EB7 /* CVWrapper.h */,
+				3B2C1CEA23204C5300CD7EB7 /* CVWrapper.mm */,
+				3B2C1CE623204C2300CD7EB7 /* opencv2.framework */,
 				3B2C1CD8232018A100CD7EB7 /* Main.storyboard */,
 				3B2C1CDB232018A400CD7EB7 /* Assets.xcassets */,
 				3B2C1CDD232018A400CD7EB7 /* LaunchScreen.storyboard */,
 				3B2C1CE0232018A400CD7EB7 /* Info.plist */,
+				3B2C1CE823204C5300CD7EB7 /* AVPlayerTest-Bridging-Header.h */,
 			);
 			path = AVPlayerTest;
 			sourceTree = "<group>";
@@ -96,6 +107,7 @@
 				TargetAttributes = {
 					3B2C1CD0232018A100CD7EB7 = {
 						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -136,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B2C1CD7232018A100CD7EB7 /* ViewController.swift in Sources */,
+				3B2C1CEB23204C5300CD7EB7 /* CVWrapper.mm in Sources */,
 				3B2C1CD5232018A100CD7EB7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,8 +295,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QHW2DL5SSN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AVPlayerTest",
+				);
 				INFOPLIST_FILE = AVPlayerTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -292,6 +310,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = yt192.AVPlayerTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AVPlayerTest/AVPlayerTest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -301,8 +321,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QHW2DL5SSN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AVPlayerTest",
+				);
 				INFOPLIST_FILE = AVPlayerTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -311,6 +336,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = yt192.AVPlayerTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AVPlayerTest/AVPlayerTest-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

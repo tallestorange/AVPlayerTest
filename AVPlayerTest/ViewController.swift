@@ -11,9 +11,8 @@ import AVKit
 import MobileCoreServices
 
 class ViewController: UIViewController {
-    var player:AVPlayer!
-    var playerItem:AVPlayerItem!
-    var playerOutput:AVPlayerItemVideoOutput!
+    var openCV:CVWrapper!
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var seekBar: UISlider!
     
@@ -23,22 +22,19 @@ class ViewController: UIViewController {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.mediaTypes = [kUTTypeMovie] as [String]
+        openCV = CVWrapper()
+        
         present(imagePicker, animated: true)
     }
     
-    func getUIImage() -> UIImage? {
-        guard let buffer = self.playerOutput.copyPixelBuffer(forItemTime: self.playerItem.currentTime(), itemTimeForDisplay: nil) else {return nil}
-        
-        let ciImage = CIImage(cvPixelBuffer: buffer)
-        let uiImage = UIImage(ciImage: ciImage)
-        return uiImage
-    }
-    
     @IBAction func moveSeekBar() {
-        self.player.pause()
-        let time = CMTime(seconds: self.playerItem.duration.seconds*Double(self.seekBar.value), preferredTimescale: CMTimeScale(1.0))
-        self.player.seek(to: time)
-        self.player.play()
+        let position = Double(self.seekBar.value)
+        self.openCV.seek(position)
+        openCV.readFrame()
+        let image = openCV.outputUIImage()
+        DispatchQueue.main.async {
+            self.imageView.image = image
+        }
     }
 }
 
@@ -47,38 +43,11 @@ extension ViewController:UIImagePickerControllerDelegate,UINavigationControllerD
         guard let movieURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {return}
         dismiss(animated: true, completion: nil)
         
-        let asset = AVAsset(url: movieURL)
-        let videoTracks = asset.tracks(withMediaType: .video)
-        
-        if videoTracks.count > 0 {
-            let videoTrack = videoTracks[0]
-            
-            print(videoTrack.naturalSize.width)
-            print(videoTrack.naturalSize.height)
-            print(videoTrack.nominalFrameRate)
-            print(videoTrack.estimatedDataRate)
-            
-            playerItem = AVPlayerItem(asset: asset)
-            playerOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32BGRA])
-            playerItem.add(playerOutput)
-            player = AVPlayer(playerItem: playerItem)
-            player.play()
-            
-            let interval = CMTime(seconds: 0.5,
-                                  preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-            // Queue on which to invoke the callback
-            let queue = DispatchQueue.global()
-            // Add time observer
-            player.addPeriodicTimeObserver(forInterval: interval, queue: queue) {
-                    [weak self] time in
-                    // update player transport UI
-                let position = self!.playerItem.currentTime().seconds / self!.playerItem.duration.seconds
-                let image = self!.getUIImage()
-                DispatchQueue.main.sync {
-                    self!.seekBar.value = Float(position)
-                    self?.imageView.image = image
-                }
-            }
+        openCV.readFile(movieURL.path)
+        openCV.readFrame()
+        let image = openCV.outputUIImage()
+        DispatchQueue.main.async {
+            self.imageView.image = image
         }
     }
 }
